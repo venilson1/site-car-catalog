@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,15 +11,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 export default function MenuAppBar() {
 
-    const [auth, setAuth] = useState(false);
+    const { authenticated } = useContext(AuthContext);
     const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleChange = (event) => {
-        setAuth(event.target.checked);
-    };
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -35,8 +33,8 @@ export default function MenuAppBar() {
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Car Catalog
               </Typography>
-              {!auth && (<Typography>ADMIN</Typography>)}
-              {auth && (
+              {!authenticated && (<Link to="/login"><Typography sx={{color: 'white'}}>LOGIN</Typography></Link>)}
+              {authenticated && (
                 <div>
                   <IconButton
                     size="large"
