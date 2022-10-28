@@ -1,18 +1,19 @@
 import React from 'react';
 import { Box, Container } from '@mui/system';
-import { Button, CssBaseline } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import MenuAppBar from '../components/MenuAppBar';
-import AddIcon from '@mui/icons-material/Add';
+
+import DataTable from '../components/DataTable';
+import BasicModal from '../components/BasicModal';
 
 export default function DashboardPage() {
   return (
     <Box>
     <CssBaseline />
         <MenuAppBar/>
+        <BasicModal/>
         <Container>
-            <Box sx={{ m: 2 }}>
-                <Button variant="contained" color="success" endIcon={<AddIcon />}>Criar</Button>
-            </Box>
+              <DataTable/>
         </Container>
     </Box>
   )
