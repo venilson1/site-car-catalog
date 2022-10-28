@@ -35,6 +35,7 @@ export default function MenuAppBar() {
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Car Catalog
               </Typography>
+              {!auth && (<Typography>ADMIN</Typography>)}
               {auth && (
                 <div>
                   <IconButton
@@ -62,8 +63,8 @@ export default function MenuAppBar() {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    <MenuItem onClick={handleClose}>Home</MenuItem>
                   </Menu>
                 </div>
               )}
