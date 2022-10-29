@@ -16,6 +16,7 @@ import CreateModal from './Modal/CreateModal';
 import EditModal from './Modal/EditModal';
 import DeleteModal from './Modal/DeleteModal';
 import { getCars } from '../services/api';
+import FormatPrice from '../utils/FormatPrice';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -101,7 +102,7 @@ export default function CustomizedTables() {
                   <StyledTableCell align="right"><img height={40} src={el.urlImage} /></StyledTableCell>
                   <StyledTableCell align="right">{el.model}</StyledTableCell>
                   <StyledTableCell align="right">{el.brand}</StyledTableCell>
-                  <StyledTableCell align="right">{el.price}</StyledTableCell>
+                  <StyledTableCell align="right">{FormatPrice(el.price)}</StyledTableCell>
                   <StyledTableCell align="right">
                       <Button variant="contained" onClick={handleOpenEdit} color="warning" endIcon={<EditIcon/>}>Editar</Button>    
                   </StyledTableCell>  

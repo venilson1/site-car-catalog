@@ -15,20 +15,23 @@ export default function MenuAppBar() {
           <AppBar position="static" sx={{background: 'black', color: 'white'}}>
             <Toolbar>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Car Catalog
+                <Link to="/"><Typography sx={{color: 'white'}}>Car Catalog</Typography></Link>
               </Typography>
               {!authenticated && (<Link to="/login"><Typography sx={{color: 'white'}}>LOGIN</Typography></Link>)}
               {authenticated && (
                 <div>
-                  <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    color="inherit"
-                  >
-                    <AccountCircle />
-                  </IconButton>
+                  <Link to="/admin">
+                    <IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      color="inherit"
+                      sx={{color: 'white'}}
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                  </Link>
                 </div>
               )}
             </Toolbar>
