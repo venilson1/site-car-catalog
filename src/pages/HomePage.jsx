@@ -7,9 +7,9 @@ import { getCars } from '../services/api';
 export default function HomePage() {
 
     const [cars, setCars] = useState([]);
-    const [countPage, setCountPage] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [countPage, setCountPage] = useState(1);
     const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(true);
 
     const handlePage = (event, value) => {
         setPage(value);
@@ -18,7 +18,7 @@ export default function HomePage() {
     useEffect(() => {
         (async () => {
             
-            const response = await getCars(page);
+            const response = await getCars(page - 1);
             setCars(response.data.data);
             setCountPage(response.data.totalPage);
             setLoading(false);
@@ -61,7 +61,7 @@ export default function HomePage() {
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Stack spacing={2}>
-                <Pagination count={countPage} page={page} color="secondary" onChange={handlePage} sx={{ p: 4 }} />
+                <Pagination count={countPage + 1} page={page} color="secondary" onChange={handlePage} sx={{ p: 4 }} />
             </Stack>
             </Box>
         </Container>

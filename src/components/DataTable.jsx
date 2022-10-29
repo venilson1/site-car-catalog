@@ -6,15 +6,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button } from '@mui/material';
+import { Button, Pagination, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/system';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CreateModal from './Modal/CreateModal';
 import EditModal from './Modal/EditModal';
 import DeleteModal from './Modal/DeleteModal';
+import { getCars } from '../services/api';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -51,6 +52,27 @@ export default function CustomizedTables() {
     const handleOpenDelete = () => setOpenDelete(true);
     const handleCloseDelete = () => setOpenDelete(false);
 
+    const [cars, setCars] = useState([]);
+    const [countPage, setCountPage] = useState(1);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(true);
+
+
+    const handlePage = (event, value) => {
+      setPage(value);
+    };
+
+
+    useEffect(() => {
+      (async () => {
+          const response = await getCars(page - 1);
+          setCars(response.data.data);
+          setCountPage(response.data.totalPage);
+          setLoading(false);
+
+      })();
+  }, [page]);
+
   return (
     <Box >
         <Box sx={{ display: 'flex', flexDirection: 'row-reverse', paddingY: 2 }}>
@@ -72,23 +94,32 @@ export default function CustomizedTables() {
             </TableHead>
             <TableBody>
             {
-                <StyledTableRow key={1}>
-                    <StyledTableCell component="th" scope="row">{'row.name'}</StyledTableCell>
-                    <StyledTableCell align="right"><img height={40} src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png" /></StyledTableCell>
-                    <StyledTableCell align="right">{'row.calories'}</StyledTableCell>
-                    <StyledTableCell align="right">{'row.fat'}</StyledTableCell>
-                    <StyledTableCell align="right">{'row.carbs'}</StyledTableCell>
-                    <StyledTableCell align="right">
-                        <Button variant="contained" onClick={handleOpenEdit} color="warning" endIcon={<EditIcon/>}>Editar</Button>    
-                    </StyledTableCell>  
-                    <StyledTableCell>
-                        <Button variant="contained" onClick={handleOpenDelete} color="error" endIcon={<DeleteIcon/>}>Deletar</Button>    
-                    </StyledTableCell>      
-                </StyledTableRow>
+              cars.map(el => {
+                return (
+                  <StyledTableRow key={el.id}>
+                  <StyledTableCell component="th" scope="row">{el.name}</StyledTableCell>
+                  <StyledTableCell align="right"><img height={40} src={el.urlImage} /></StyledTableCell>
+                  <StyledTableCell align="right">{el.model}</StyledTableCell>
+                  <StyledTableCell align="right">{el.brand}</StyledTableCell>
+                  <StyledTableCell align="right">{el.price}</StyledTableCell>
+                  <StyledTableCell align="right">
+                      <Button variant="contained" onClick={handleOpenEdit} color="warning" endIcon={<EditIcon/>}>Editar</Button>    
+                  </StyledTableCell>  
+                  <StyledTableCell>
+                      <Button variant="contained" onClick={handleOpenDelete} color="error" endIcon={<DeleteIcon/>}>Deletar</Button>    
+                  </StyledTableCell>      
+                  </StyledTableRow>
+                )
+              })
             }
             </TableBody>
         </Table>
         </TableContainer>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Stack spacing={2}>
+              <Pagination count={countPage + 1} page={page} color="secondary" onChange={handlePage} sx={{ p: 4 }} />
+          </Stack>
+        </Box>
         <CreateModal open={openCreate} handleOpen={handleOpenCreate} handleClose={handleCloseCreate} />
         <EditModal open={openEdit} handleOpen={handleOpenEdit} handleClose={handleCloseEdit} />
         <DeleteModal open={openDelete} handleOpen={handleOpenDelete} handleClose={handleCloseDelete} />
