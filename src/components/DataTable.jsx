@@ -6,11 +6,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, CssBaseline } from '@mui/material';
+import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/system';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
+import CreateModal from './Modal/CreateModal';
+import EditModal from './Modal/EditModal';
+import DeleteModal from './Modal/DeleteModal';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,10 +38,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 export default function CustomizedTables() {
+
+    const [openCreate, setOpenCreate] = useState(false);
+    const handleOpenCreate = () => setOpenCreate(true);
+    const handleCloseCreate = () => setOpenCreate(false);
+
+    const [openEdit, setOpenEdit] = useState(false);
+    const handleOpenEdit = () => setOpenEdit(true);
+    const handleCloseEdit = () => setOpenEdit(false);
+
+    const [openDelete, setOpenDelete] = useState(false);
+    const handleOpenDelete = () => setOpenDelete(true);
+    const handleCloseDelete = () => setOpenDelete(false);
+
   return (
     <Box >
         <Box sx={{ display: 'flex', flexDirection: 'row-reverse', paddingY: 2 }}>
-            <Button variant="contained" color="success" endIcon={<AddIcon />}>Criar</Button>
+            <Button onClick={handleOpenCreate} variant="contained" color="success" endIcon={<AddIcon />}>Criar</Button>
         </Box>
         <TableContainer component={Paper}>
 
@@ -62,16 +79,19 @@ export default function CustomizedTables() {
                     <StyledTableCell align="right">{'row.fat'}</StyledTableCell>
                     <StyledTableCell align="right">{'row.carbs'}</StyledTableCell>
                     <StyledTableCell align="right">
-                        <Button variant="contained" color="warning" endIcon={<EditIcon/>}>Editar</Button>    
+                        <Button variant="contained" onClick={handleOpenEdit} color="warning" endIcon={<EditIcon/>}>Editar</Button>    
                     </StyledTableCell>  
                     <StyledTableCell>
-                        <Button variant="contained" color="error" endIcon={<DeleteIcon/>}>Deletar</Button>    
+                        <Button variant="contained" onClick={handleOpenDelete} color="error" endIcon={<DeleteIcon/>}>Deletar</Button>    
                     </StyledTableCell>      
                 </StyledTableRow>
             }
             </TableBody>
         </Table>
         </TableContainer>
+        <CreateModal open={openCreate} handleOpen={handleOpenCreate} handleClose={handleCloseCreate} />
+        <EditModal open={openEdit} handleOpen={handleOpenEdit} handleClose={handleCloseEdit} />
+        <DeleteModal open={openDelete} handleOpen={handleOpenDelete} handleClose={handleCloseDelete} />
     </Box>
 
   );

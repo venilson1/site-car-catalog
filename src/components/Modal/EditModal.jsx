@@ -1,10 +1,8 @@
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
-import { TextField } from '@mui/material';
-import InputText from './InputText';
+import InputText from '../InputText';
 
 const style = {
     position: 'absolute',
@@ -20,10 +18,7 @@ const style = {
     pb: 3,
   };
 
-export default function BasicModal() {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function EditModal({open, handleOpen, handleClose}) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,7 +30,6 @@ export default function BasicModal() {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -43,19 +37,31 @@ export default function BasicModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} component="form" onSubmit={handleSubmit} noValidate>
+          <h1 align="center">Editar produto</h1>
             <InputText id={"name"} label={"Nome"} name={"name"}/>
             <InputText id={"brand"} label={"Marca"} name={"brand"}/>
             <InputText id={"model"} label={"Modelo"} name={"model"}/>
             <InputText id={"price"} label={"Preço"} name={"price"}/>
             <InputText id={"url"} label={"Url Imagem"} name={"url"}/>
+            <Box sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
             <Button
-                type="submit"
-                variant="contained"
-                color='success'
-                sx={{ mt: 3, mb: 2 }}
-            >
-                Salvar
-            </Button>
+                  type="submit"
+                  variant="contained"
+                  color='error'
+                  sx={{ mt: 3, mb: 2, ml: 2 }}
+                  onClick={handleClose}
+              >
+                  Cancelar
+              </Button>
+              <Button
+                  type="submit"
+                  variant="contained"
+                  color='success'
+                  sx={{ mt: 3, mb: 2 }}
+              >
+                  Salvar
+              </Button>
+            </Box>
         </Box>
       </Modal>
     </div>
