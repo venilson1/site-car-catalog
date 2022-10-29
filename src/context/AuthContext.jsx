@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, createSession } from "../services/api";
+import { api, createSession, createUser } from "../services/api";
 
 export const AuthContext = createContext();
 
@@ -15,11 +15,7 @@ export default function AuthProvider({children}) {
 
     const response = await createSession(username, password);
 
-    console.log("login auth", response.data);
-
     const token = response.data.message;
-
-    console.log(token);
 
     localStorage.setItem("token", JSON.stringify(token));
 
@@ -28,6 +24,11 @@ export default function AuthProvider({children}) {
       setUser(token);
       navigate("/admin");
   };
+
+  async function create(username, email, password){
+    const response = await createUser(username, email, password);
+    return navigate("/login");
+  }
 
   function logout(){
     console.log("logout");
@@ -46,7 +47,7 @@ export default function AuthProvider({children}) {
 
 
   return (
-    <AuthContext.Provider value={{ authenticated: !!user, user, login, logout, loading }}>
+    <AuthContext.Provider value={{ authenticated: !!user, user, login, logout, create, loading }}>
     {children}
   </AuthContext.Provider>
   )

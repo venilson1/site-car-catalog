@@ -4,9 +4,8 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
+import { Link } from '@mui/material';
 import { AuthContext } from '../context/AuthContext';
-import { Link as LinkRouter } from 'react-router-dom';
 
 function Copyright(props) {
     return (
@@ -21,18 +20,20 @@ function Copyright(props) {
     );
 }
 
-export default function LoginPage() {
+export default function CreateUserPage() {
 
-    const { login } = useContext(AuthContext);
+    const { create } = useContext(AuthContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const username = data.get('username');
+        const email = data.get('email');
         const password = data.get('password');
-        //console.log("submit", { username, password });
 
-        login(username, password);
+        console.log(username, email, password);
+
+        create(username, email, password);
     };
 
   return (
@@ -49,7 +50,7 @@ export default function LoginPage() {
         }}
     >
         <Typography component="h1" variant="h5">
-            Verzel
+            Criar Usuário
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -59,6 +60,16 @@ export default function LoginPage() {
                 id="username"
                 label="Username"
                 name="username"
+                autoFocus
+            />
+            <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="E-mail"
+                name="email"
+                type="email"
                 autoFocus
             />
             <TextField
@@ -77,11 +88,8 @@ export default function LoginPage() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
             >
-                Entrar
+                Criar
             </Button>
-            <Typography variant="body2" color="text.secondary" align="center">
-                <LinkRouter to="/create">Criar Usuário</LinkRouter>
-            </Typography>
         </Box>
     </Box>
     <Copyright sx={{ mt: 8, mb: 4 }} />
