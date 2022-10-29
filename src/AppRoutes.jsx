@@ -6,7 +6,7 @@ import DashboardPage from './pages/DashboardPage';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 
-function Privaye({children}){
+function Private({children}){
     const { authenticated, loading } = useContext(AuthContext);
 
     if (loading) {
@@ -36,7 +36,7 @@ export default function AppRoutes() {
             <Routes>
                 <Route exact path="/login" element={<LoginPage />} />
                 <Route exact path="/" element={<HomePage />} />
-                <Route exact path="/admin" element={<DashboardPage />} />
+                <Route exact path="/admin" element={<Private><DashboardPage /></Private>} />
                 <Route path='*' element={<HomePage />} />
             </Routes>
         </AuthProvider>

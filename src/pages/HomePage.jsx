@@ -1,9 +1,23 @@
-import { Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Pagination, Typography } from '@mui/material'
+import {  Card, CardContent, CardMedia, CssBaseline, Pagination, Typography } from '@mui/material'
 import { Box, Container } from '@mui/system'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MenuAppBar from '../components/MenuAppBar'
+import { getCars } from '../services/api';
 
 export default function HomePage() {
+
+    const [cars, setCars] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        (async () => {
+            const response = await getCars();
+            setCars(response.data);
+            setLoading(false);
+            console.log(cars);
+        })();
+    }, []);
+
   return (
     <Box>
         <CssBaseline />
