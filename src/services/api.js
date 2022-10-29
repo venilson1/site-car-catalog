@@ -9,5 +9,5 @@ export const createSession = async (username, password) => {
 };
 
 export const getCars = async (page = 0) => {
-    return api.post(`api/car?page=${page}`);
+    return api.get(`api/car?page=${page}`);
 };
