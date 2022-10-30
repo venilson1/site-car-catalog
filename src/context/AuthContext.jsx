@@ -26,7 +26,7 @@ export default function AuthProvider({children}) {
   };
 
   async function create(username, email, password){
-    const response = await createUser(username, email, password);
+    await createUser(username, email, password);
     return navigate("/login");
   }
 
@@ -40,8 +40,6 @@ export default function AuthProvider({children}) {
   };
 
   useEffect(() => {
-      const tokenLocalStorage = localStorage.getItem("token");
-      if (tokenLocalStorage) setUser(JSON.parse(tokenLocalStorage));
       setLoading(false);
   },[]);
 

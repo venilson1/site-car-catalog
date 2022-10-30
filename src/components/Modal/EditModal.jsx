@@ -2,6 +2,7 @@ import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import { updateCars } from '../../services/api';
 import InputText from '../InputText';
 
 const style = {
@@ -18,9 +19,9 @@ const style = {
     pb: 3,
   };
 
-export default function EditModal({open, handleOpen, handleClose}) {
+export default function EditModal({open, handleClose}) {
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = data.get('name');
@@ -28,7 +29,13 @@ export default function EditModal({open, handleOpen, handleClose}) {
     const model = data.get('model');
     const price = data.get('price');
     const urlImage = data.get('urlImage');
-    console.log({ name, brand, model, price, urlImage });
+
+    try{
+      await updateCars(name, brand, model, price, urlImage);
+    }
+    catch{
+      alert("error")
+    }
   };
 
   return (
