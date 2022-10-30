@@ -29,10 +29,7 @@ export default function EditModal({open, cars, handleClose}) {
   };
 
   const handleCloseSnack = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
+    if (reason === 'clickaway') return;
     setOpenSnack(false);
   };
 

@@ -24,6 +24,6 @@ export const updateCars = async (id, name, brand, model, price, urlImage) => {
     return api.put(`/api/car/${id}`, {name, brand, model, price, urlImage});
 };
 
-export const deleteCars = async () => {
-    return api.delete(`/api/car`);
+export const deleteCars = async (id) => {
+    return api.delete(`/api/car/${id}`);
 };

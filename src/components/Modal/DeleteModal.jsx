@@ -1,8 +1,9 @@
-import { Fade, Typography } from '@mui/material';
+import { Alert, Snackbar, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import InputText from '../InputText';
+import { useState } from 'react';
+import { deleteCars } from '../../services/api';
 
   const style = {
     position: 'absolute',
@@ -15,7 +16,29 @@ import InputText from '../InputText';
     p: 4,
   };
 
-export default function DeleteModal({open, handleOpen, handleClose}) {
+export default function DeleteModal({open, cars, handleClose}) {
+
+  const [openSnack, setOpenSnack] = useState(false);
+
+  const handleClickSnack = () => {
+    setOpenSnack(true);
+  };
+
+  const handleCloseSnack = (event, reason) => {
+    if (reason === 'clickaway') return;
+    setOpenSnack(false);
+  };
+
+  const handleSubmit = async () => {
+
+    try{
+      await deleteCars(cars.id);
+      handleClose();
+      handleClickSnack();
+    }catch{
+      alert("error");
+    }
+  };
 
   return (
     <div>
@@ -35,13 +58,18 @@ export default function DeleteModal({open, handleOpen, handleClose}) {
                   variant="contained"
                   color='error'
                   sx={{ mt: 3, mb: 2 }}
-                  onClick={handleClose}
+                  onClick={handleSubmit}
               >
                   Deletar
               </Button>
             </Box>
         </Box>
       </Modal>
+      <Snackbar open={openSnack} autoHideDuration={1900} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="error" sx={{ width: '100%' }}>
+          Deletado com Sucesso
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

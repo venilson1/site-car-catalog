@@ -49,16 +49,18 @@ export default function CustomizedTables() {
     const handleCloseCreate = () => setOpenCreate(false);
 
     const [openEdit, setOpenEdit] = useState(false);
+    const handleCloseEdit = () => setOpenEdit(false);
     const handleOpenEdit = (data) => {
       setOpenEdit(true)
       setCarsEdit(data);
     }
 
-    const handleCloseEdit = () => setOpenEdit(false);
-
     const [openDelete, setOpenDelete] = useState(false);
-    const handleOpenDelete = (data) => setOpenDelete(true);
     const handleCloseDelete = () => setOpenDelete(false);
+    const handleOpenDelete = (data) => {
+      setOpenDelete(true);
+      setCarsEdit(data);
+    }
 
     const [cars, setCars] = useState([]);
     const [countPage, setCountPage] = useState(1);
@@ -114,7 +116,7 @@ export default function CustomizedTables() {
                       <Button variant="contained" onClick={() => handleOpenEdit(el)} color="warning" endIcon={<EditIcon/>}>Editar</Button>    
                   </StyledTableCell>  
                   <StyledTableCell>
-                      <Button variant="contained" onClick={handleOpenDelete} color="error" endIcon={<DeleteIcon/>}>Deletar</Button>    
+                      <Button variant="contained" onClick={() => handleOpenDelete(el)} color="error" endIcon={<DeleteIcon/>}>Deletar</Button>    
                   </StyledTableCell>      
                   </StyledTableRow>
                 )
@@ -130,7 +132,7 @@ export default function CustomizedTables() {
         </Box>
         <CreateModal open={openCreate} handleOpen={handleOpenCreate} handleClose={handleCloseCreate} />
         <EditModal open={openEdit} cars={carsEdit} handleClose={handleCloseEdit} />
-        <DeleteModal open={openDelete} handleOpen={handleOpenDelete} handleClose={handleCloseDelete} />
+        <DeleteModal open={openDelete} cars={carsEdit} handleClose={handleCloseDelete} />
     </Box>
 
   );
