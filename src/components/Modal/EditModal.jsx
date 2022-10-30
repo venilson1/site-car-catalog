@@ -28,10 +28,8 @@ export default function EditModal({open, handleOpen, handleClose}) {
     const model = data.get('model');
     const price = data.get('price');
     const urlImage = data.get('urlImage');
-    console.log(data= { name, brand, model, price, urlImage });
-
-    
-};
+    console.log({ name, brand, model, price, urlImage });
+  };
 
   return (
     <div>

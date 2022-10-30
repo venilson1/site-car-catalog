@@ -2,6 +2,7 @@ import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import { createCars } from '../../services/api';
 import InputText from '../InputText';
 
 const style = {
@@ -18,15 +19,25 @@ const style = {
     pb: 3,
   };
 
-export default function CreateModal({open, handleOpen, handleClose}) {
+export default function CreateModal({open, handleClose}) {
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const username = data.get('username');
-    const password = data.get('password');
-    console.log("submit", { username, password });
-};
+    const name = data.get('name');
+    const brand = data.get('brand');
+    const model = data.get('model');
+    const price = data.get('price');
+    const urlImage = data.get('urlImage');
+    console.log({ name, brand, model, price, urlImage });
+
+    try{
+      await createCars(name, brand, model, price, urlImage, sessionStorage.getItem("token"));
+    }
+    catch{
+      alert("error")
+    }
+  };
 
   return (
     <div>
@@ -38,11 +49,11 @@ export default function CreateModal({open, handleOpen, handleClose}) {
       >
         <Box sx={style} component="form" onSubmit={handleSubmit} noValidate>
           <h1 align="center">Criar um novo produto</h1>
-            <InputText id={"name"} label={"Nome"} name={"name"}/>
-            <InputText id={"brand"} label={"Marca"} name={"brand"}/>
-            <InputText id={"model"} label={"Modelo"} name={"model"}/>
-            <InputText id={"price"} label={"Preço"} name={"price"}/>
-            <InputText id={"url"} label={"Url Imagem"} name={"url"}/>
+            <InputText id={"name"} label={"Nome"} name={"name"} type={"text"}/>
+            <InputText id={"brand"} label={"Marca"} name={"brand"} type={"text"}/>
+            <InputText id={"model"} label={"Modelo"} name={"model"} type={"text"}/>
+            <InputText id={"price"} label={"Preço"} name={"price"} type={"number"}/>
+            <InputText id={"urlImage"} label={"Url Imagem"} name={"urlImage"} type={"url"}/>
             <Box sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
             <Button
                   type="submit"

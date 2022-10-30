@@ -16,24 +16,12 @@ export const getCars = async (page = 0) => {
     return api.get(`api/car?page=${page}`);
 };
 
-export const createCars = async (data) => {
-    return api.post(`/api/car`, {
-        name: data.name,
-        brand: data.brand,
-        model: data.model,
-        price: data.price,
-        urlImage: data.urlImage
-      });
+export const createCars = async (name, brand, model, price, urlImage) => {
+    return api.post(`/api/car`, {name, brand, model, price, urlImage});
 };
 
-export const updateCars = async (data) => {
-    return api.put(`/api/car`, {
-        name: data.name,
-        brand: data.brand,
-        model: data.model,
-        price: data.price,
-        urlImage: data.urlImage
-      });
+export const updateCars = async (name, brand, model, price, urlImage) => {
+    return api.put(`/api/car`, {name, brand, model, price, urlImage});
 };
 
 export const deleteCars = async () => {
