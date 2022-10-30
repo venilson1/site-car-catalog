@@ -23,9 +23,14 @@ export default function EditModal({open, handleOpen, handleClose}) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const username = data.get('username');
-    const password = data.get('password');
-    console.log("submit", { username, password });
+    const name = data.get('name');
+    const brand = data.get('brand');
+    const model = data.get('model');
+    const price = data.get('price');
+    const urlImage = data.get('urlImage');
+    console.log(data= { name, brand, model, price, urlImage });
+
+    
 };
 
   return (
@@ -38,11 +43,11 @@ export default function EditModal({open, handleOpen, handleClose}) {
       >
         <Box sx={style} component="form" onSubmit={handleSubmit} noValidate>
           <h1 align="center">Editar produto</h1>
-            <InputText id={"name"} label={"Nome"} name={"name"}/>
-            <InputText id={"brand"} label={"Marca"} name={"brand"}/>
-            <InputText id={"model"} label={"Modelo"} name={"model"}/>
-            <InputText id={"price"} label={"Preço"} name={"price"}/>
-            <InputText id={"url"} label={"Url Imagem"} name={"url"}/>
+            <InputText id={"name"} label={"Nome"} name={"name"} type={"text"}/>
+            <InputText id={"brand"} label={"Marca"} name={"brand"} type={"text"}/>
+            <InputText id={"model"} label={"Modelo"} name={"model"} type={"text"}/>
+            <InputText id={"price"} label={"Preço"} name={"price"} type={"number"}/>
+            <InputText id={"urlImage"} label={"Url Imagem"} name={"urlImage"} type={"url"}/>
             <Box sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
             <Button
                   type="submit"
