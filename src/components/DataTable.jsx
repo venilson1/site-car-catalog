@@ -41,16 +41,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function CustomizedTables() {
 
+    const [carsEdit, setCarsEdit] = useState({});
+
     const [openCreate, setOpenCreate] = useState(false);
     const handleOpenCreate = () => setOpenCreate(true);
+
     const handleCloseCreate = () => setOpenCreate(false);
 
     const [openEdit, setOpenEdit] = useState(false);
-    const handleOpenEdit = () => setOpenEdit(true);
+    const handleOpenEdit = (data) => {
+      setOpenEdit(true)
+      setCarsEdit(data);
+    }
+
     const handleCloseEdit = () => setOpenEdit(false);
 
     const [openDelete, setOpenDelete] = useState(false);
-    const handleOpenDelete = () => setOpenDelete(true);
+    const handleOpenDelete = (data) => setOpenDelete(true);
     const handleCloseDelete = () => setOpenDelete(false);
 
     const [cars, setCars] = useState([]);
@@ -72,7 +79,7 @@ export default function CustomizedTables() {
           setLoading(false);
 
       })();
-  }, [page]);
+  }, [page, cars]);
 
   return (
     <Box >
@@ -104,7 +111,7 @@ export default function CustomizedTables() {
                   <StyledTableCell align="right">{el.brand}</StyledTableCell>
                   <StyledTableCell align="right">{FormatPrice(el.price)}</StyledTableCell>
                   <StyledTableCell align="right">
-                      <Button variant="contained" onClick={handleOpenEdit} color="warning" endIcon={<EditIcon/>}>Editar</Button>    
+                      <Button variant="contained" onClick={() => handleOpenEdit(el)} color="warning" endIcon={<EditIcon/>}>Editar</Button>    
                   </StyledTableCell>  
                   <StyledTableCell>
                       <Button variant="contained" onClick={handleOpenDelete} color="error" endIcon={<DeleteIcon/>}>Deletar</Button>    
@@ -122,7 +129,7 @@ export default function CustomizedTables() {
           </Stack>
         </Box>
         <CreateModal open={openCreate} handleOpen={handleOpenCreate} handleClose={handleCloseCreate} />
-        <EditModal open={openEdit} handleOpen={handleOpenEdit} handleClose={handleCloseEdit} />
+        <EditModal open={openEdit} cars={carsEdit} handleClose={handleCloseEdit} />
         <DeleteModal open={openDelete} handleOpen={handleOpenDelete} handleClose={handleCloseDelete} />
     </Box>
 

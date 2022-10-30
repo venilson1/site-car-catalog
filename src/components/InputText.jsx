@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 
-export default function InputText({id, label, name, type, error}) {
+export default function InputText({id, label, name, type, error, value}) {
   return (
     <TextField
         error={error}
@@ -12,6 +12,7 @@ export default function InputText({id, label, name, type, error}) {
         label={label}
         name={name}
         autoFocus
+        defaultValue={value}
     />
   )
 }

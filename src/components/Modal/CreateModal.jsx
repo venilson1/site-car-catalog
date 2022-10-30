@@ -27,12 +27,10 @@ const style = {
 
 export default function CreateModal({open, handleClose}) {
 
-  const [openSnack, setOpenSnack] = useState(true);
-  const [snack, setSnack] = useState({color: "", msg: ""});
+  const [openSnack, setOpenSnack] = useState(false);
 
-  const handleClickSnack = (color, msg) => {
+  const handleClickSnack = () => {
     setOpenSnack(true);
-    setSnack({color, msg});
   };
 
   const handleCloseSnack = (event, reason) => {
@@ -55,11 +53,11 @@ export default function CreateModal({open, handleClose}) {
     try{
       await createCars(name, brand, model, price, urlImage);
       handleClose();
-      handleClickSnack("success", "Salvo com sucesso");
+      handleClickSnack();
     }
     catch{
       handleClose();
-      handleClickSnack("error", "Erro ao salvar");
+      alert("erro");
     }
   };
 
@@ -99,9 +97,9 @@ export default function CreateModal({open, handleClose}) {
             </Box>
         </Box>
       </Modal>
-      <Snackbar open={openSnack} autoHideDuration={1500} onClose={handleCloseSnack}>
-        <Alert onClose={handleCloseSnack} severity={snack.color} sx={{ width: '100%' }}>
-          {snack.msg}
+      <Snackbar open={openSnack} autoHideDuration={1900} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="success" sx={{ width: '100%' }}>
+          Salvo com Sucesso
         </Alert>
       </Snackbar>
     </div>

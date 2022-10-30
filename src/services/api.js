@@ -20,10 +20,10 @@ export const createCars = async (name, brand, model, price, urlImage) => {
     return api.post(`/api/car`, {name, brand, model, price, urlImage});
 };
 
-export const updateCars = async (name, brand, model, price, urlImage) => {
-    return api.put(`/api/car`, {name, brand, model, price, urlImage});
+export const updateCars = async (id, name, brand, model, price, urlImage) => {
+    return api.put(`/api/car/${id}`, {name, brand, model, price, urlImage});
 };
 
 export const deleteCars = async () => {
-    return api.put(`/api/car`);
+    return api.delete(`/api/car`);
 };
