@@ -1,9 +1,10 @@
-import { Alert, Snackbar, Typography } from '@mui/material';
+import { Snackbar, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { deleteCars } from '../../services/api';
+import MuiAlert from '@mui/material/Alert';
 
   const style = {
     position: 'absolute',
@@ -16,9 +17,14 @@ import { deleteCars } from '../../services/api';
     p: 4,
   };
 
+  const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
 export default function DeleteModal({open, cars, handleClose}) {
 
   const [openSnack, setOpenSnack] = useState(false);
+  const [statusError, setStatusError] = useState("");
 
   const handleClickSnack = () => {
     setOpenSnack(true);
@@ -33,10 +39,11 @@ export default function DeleteModal({open, cars, handleClose}) {
 
     try{
       await deleteCars(cars.id);
-      handleClose();
+      window.location.reload();
+    }catch(error){
+      setStatusError(error.message);
       handleClickSnack();
-    }catch{
-      alert("error");
+      handleClose();
     }
   };
 
@@ -67,7 +74,7 @@ export default function DeleteModal({open, cars, handleClose}) {
       </Modal>
       <Snackbar open={openSnack} autoHideDuration={1900} onClose={handleCloseSnack}>
         <Alert onClose={handleCloseSnack} severity="error" sx={{ width: '100%' }}>
-          Deletado com Sucesso
+          {statusError}
         </Alert>
       </Snackbar>
     </div>

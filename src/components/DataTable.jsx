@@ -81,7 +81,7 @@ export default function CustomizedTables() {
           setLoading(false);
 
       })();
-  }, [page, cars]);
+  }, [page]);
 
   return (
     <Box >

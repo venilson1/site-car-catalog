@@ -53,12 +53,13 @@ export default function AuthProvider({children}) {
   };
 
   useEffect(() => {
-      setLoading(false);
+    /*
       let userRecovered = localStorage.getItem("username");
+      if(userRecovered) setUser(userRecovered);
 
-      if(userRecovered){
-        setUser(userRecovered)
-      }
+      let tokenRecovered = localStorage.getItem("token");
+      if(tokenRecovered) localStorage.setItem("token", tokenRecovered);
+    */
       setLoading(false);
   },[]);
 

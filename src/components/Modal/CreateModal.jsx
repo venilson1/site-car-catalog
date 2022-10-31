@@ -28,6 +28,7 @@ const style = {
 export default function CreateModal({open, handleClose}) {
 
   const [openSnack, setOpenSnack] = useState(false);
+  const [statusError, setStatusError] = useState("");
 
   const handleClickSnack = () => {
     setOpenSnack(true);
@@ -52,12 +53,12 @@ export default function CreateModal({open, handleClose}) {
 
     try{
       await createCars(name, brand, model, price, urlImage);
-      handleClose();
-      handleClickSnack();
+      window.location.reload();
     }
-    catch{
+    catch(error){
+      setStatusError(statusError);
+      handleClickSnack();
       handleClose();
-      alert("erro");
     }
   };
 
@@ -98,8 +99,8 @@ export default function CreateModal({open, handleClose}) {
         </Box>
       </Modal>
       <Snackbar open={openSnack} autoHideDuration={1900} onClose={handleCloseSnack}>
-        <Alert onClose={handleCloseSnack} severity="success" sx={{ width: '100%' }}>
-          Salvo com Sucesso
+        <Alert onClose={handleCloseSnack} severity="error" sx={{ width: '100%' }}>
+          {statusError}
         </Alert>
       </Snackbar>
     </div>

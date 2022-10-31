@@ -1,10 +1,11 @@
-import { Alert, Snackbar } from '@mui/material';
+import { Snackbar } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { updateCars } from '../../services/api';
 import InputText from '../InputText';
+import MuiAlert from '@mui/material/Alert';
 
 const style = {
     position: 'absolute',
@@ -20,9 +21,14 @@ const style = {
     pb: 3,
   };
 
+  const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
 export default function EditModal({open, cars, handleClose}) {
 
   const [openSnack, setOpenSnack] = useState(false);
+  const [statusError, setStatusError] = useState("");
 
   const handleClickSnack = () => {
     setOpenSnack(true);
@@ -45,11 +51,12 @@ export default function EditModal({open, cars, handleClose}) {
 
     try{
       await updateCars(id, name, brand, model, price, urlImage);
-      handleClose();
-      handleClickSnack();
+      window.location.reload();
     }
-    catch{
-      alert("error")
+    catch(error){
+      setStatusError(error.message);
+      handleClickSnack();
+      handleClose();
     }
   };
 
@@ -90,8 +97,8 @@ export default function EditModal({open, cars, handleClose}) {
         </Box>
       </Modal>
       <Snackbar open={openSnack} autoHideDuration={1900} onClose={handleCloseSnack}>
-        <Alert onClose={handleCloseSnack} severity="success" sx={{ width: '100%' }}>
-          Atualizado com Sucesso
+        <Alert onClose={handleCloseSnack} severity="error" sx={{ width: '100%' }}>
+          {statusError}
         </Alert>
       </Snackbar>
     </div>
