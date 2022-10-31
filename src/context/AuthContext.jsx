@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api, createSession, createUser } from "../services/api";
+import jwt_decode from "jwt-decode";
 
 export const AuthContext = createContext();
 
@@ -17,13 +18,16 @@ export default function AuthProvider({children}) {
       const response = await createSession(username, password);
 
       const token = response.data.message;
-  
+
+      const decode = jwt_decode(token);
+
+      localStorage.setItem("username", decode.username);
       localStorage.setItem("token", JSON.stringify(token));
   
       api.defaults.headers.Authorization = `Bearer ${token}`;
   
-        setUser(token);
-        navigate("/admin");
+      setUser(decode.username);
+      navigate("/admin");
     }
     catch(error){
       return error.message;
@@ -41,8 +45,7 @@ export default function AuthProvider({children}) {
   }
 
   function logout(){
-    console.log("logout");
-
+    localStorage.removeItem("username");
     localStorage.removeItem("token");
     api.defaults.headers.Authorization = null;
     setUser(null);
@@ -50,6 +53,12 @@ export default function AuthProvider({children}) {
   };
 
   useEffect(() => {
+      setLoading(false);
+      let userRecovered = localStorage.getItem("username");
+
+      if(userRecovered){
+        setUser(userRecovered)
+      }
       setLoading(false);
   },[]);
 
