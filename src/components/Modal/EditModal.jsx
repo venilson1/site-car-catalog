@@ -2,10 +2,11 @@ import { Snackbar } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useContext, useState } from 'react';
 import { updateCars } from '../../services/api';
 import InputText from '../InputText';
 import MuiAlert from '@mui/material/Alert';
+import { AuthContext } from '../../context/AuthContext';
 
 const style = {
     position: 'absolute',
@@ -49,14 +50,20 @@ export default function EditModal({open, cars, handleClose}) {
     const urlImage = data.get('urlImage');
     const id = cars.id;
 
+    const tokenRecovered = localStorage.getItem("token");
+    var token = tokenRecovered.replace(/["]/g, '');
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+
     try{
-      await updateCars(id, name, brand, model, price, urlImage);
+      await updateCars(id, name, brand, model, price, urlImage, config);
       window.location.reload();
     }
     catch(error){
       setStatusError(error.message);
       handleClickSnack();
-      handleClose();
     }
   };
 
@@ -96,7 +103,7 @@ export default function EditModal({open, cars, handleClose}) {
             </Box>
         </Box>
       </Modal>
-      <Snackbar open={openSnack} autoHideDuration={1900} onClose={handleCloseSnack}>
+      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
         <Alert onClose={handleCloseSnack} severity="error" sx={{ width: '100%' }}>
           {statusError}
         </Alert>

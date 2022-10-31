@@ -51,14 +51,20 @@ export default function CreateModal({open, handleClose}) {
     const price = data.get('price');
     const urlImage = data.get('urlImage');
 
+    const tokenRecovered = localStorage.getItem("token");
+    var token = tokenRecovered.replace(/["]/g, '');
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+
     try{
-      await createCars(name, brand, model, price, urlImage);
+      await createCars(name, brand, model, price, urlImage, config);
       window.location.reload();
     }
     catch(error){
       setStatusError(statusError);
       handleClickSnack();
-      handleClose();
     }
   };
 
@@ -98,7 +104,7 @@ export default function CreateModal({open, handleClose}) {
             </Box>
         </Box>
       </Modal>
-      <Snackbar open={openSnack} autoHideDuration={1900} onClose={handleCloseSnack}>
+      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
         <Alert onClose={handleCloseSnack} severity="error" sx={{ width: '100%' }}>
           {statusError}
         </Alert>

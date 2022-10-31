@@ -11,6 +11,7 @@ export default function AuthProvider({children}) {
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [jwt, setJwt] = useState();
 
   async function login (username, password){
 
@@ -18,13 +19,13 @@ export default function AuthProvider({children}) {
       const response = await createSession(username, password);
 
       const token = response.data.message;
-
+      
       const decode = jwt_decode(token);
 
       localStorage.setItem("username", decode.username);
       localStorage.setItem("token", JSON.stringify(token));
   
-      api.defaults.headers.Authorization = `Bearer ${token}`;
+      //api.defaults.headers.Authorization = `Bearer ${token}`;
   
       setUser(decode.username);
       navigate("/admin");
@@ -53,13 +54,17 @@ export default function AuthProvider({children}) {
   };
 
   useEffect(() => {
-    /*
+    
       let userRecovered = localStorage.getItem("username");
       if(userRecovered) setUser(userRecovered);
 
       let tokenRecovered = localStorage.getItem("token");
-      if(tokenRecovered) localStorage.setItem("token", tokenRecovered);
-    */
+      
+      if(tokenRecovered){
+        var token = tokenRecovered.replace(/["]/g, '');
+        localStorage.setItem("token", token);
+      }
+
       setLoading(false);
   },[]);
 

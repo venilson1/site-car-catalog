@@ -38,12 +38,19 @@ export default function DeleteModal({open, cars, handleClose}) {
   const handleSubmit = async () => {
 
     try{
-      await deleteCars(cars.id);
+
+      const tokenRecovered = localStorage.getItem("token");
+      var token = tokenRecovered.replace(/["]/g, '');
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+
+      await deleteCars(cars.id, config);
       window.location.reload();
     }catch(error){
       setStatusError(error.message);
       handleClickSnack();
-      handleClose();
     }
   };
 
@@ -72,7 +79,7 @@ export default function DeleteModal({open, cars, handleClose}) {
             </Box>
         </Box>
       </Modal>
-      <Snackbar open={openSnack} autoHideDuration={1900} onClose={handleCloseSnack}>
+      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
         <Alert onClose={handleCloseSnack} severity="error" sx={{ width: '100%' }}>
           {statusError}
         </Alert>
