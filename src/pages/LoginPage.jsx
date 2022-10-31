@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { forwardRef, useContext, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -7,6 +7,8 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { AuthContext } from '../context/AuthContext';
 import { Link as LinkRouter } from 'react-router-dom';
+import { Snackbar } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 
 function Copyright(props) {
     return (
@@ -21,18 +23,39 @@ function Copyright(props) {
     );
 }
 
+const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
 export default function LoginPage() {
 
     const { login } = useContext(AuthContext);
 
-    const handleSubmit = (event) => {
+    const [openSnack, setOpenSnack] = useState(false);
+    const [statusError, setStatusError] = useState("");
+
+    const handleClickSnack = () => {
+        setOpenSnack(true);
+    };
+
+    const handleCloseSnack = (event, reason) => {
+        if (reason === 'clickaway') return;
+        setOpenSnack(false);
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const username = data.get('username');
         const password = data.get('password');
-        //console.log("submit", { username, password });
 
-        login(username, password);
+        const response = await login(username, password);
+
+        if(response){
+            handleClickSnack();
+            setStatusError(response);
+        }
+        
     };
 
   return (
@@ -85,6 +108,11 @@ export default function LoginPage() {
         </Box>
     </Box>
     <Copyright sx={{ mt: 8, mb: 4 }} />
+    <Snackbar open={openSnack} autoHideDuration={15000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="error" sx={{ width: '100%' }}>
+            {statusError}
+        </Alert>
+      </Snackbar>
     </Container>
   )
 }

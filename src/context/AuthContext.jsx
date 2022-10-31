@@ -13,21 +13,31 @@ export default function AuthProvider({children}) {
 
   async function login (username, password){
 
-    const response = await createSession(username, password);
+    try{
+      const response = await createSession(username, password);
 
-    const token = response.data.message;
+      const token = response.data.message;
+  
+      localStorage.setItem("token", JSON.stringify(token));
+  
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+  
+        setUser(token);
+        navigate("/admin");
+    }
+    catch(error){
+      return error.message;
+    }
 
-    localStorage.setItem("token", JSON.stringify(token));
-
-    api.defaults.headers.Authorization = `Bearer ${token}`;
-
-      setUser(token);
-      navigate("/admin");
   };
 
   async function create(username, email, password){
-    await createUser(username, email, password);
-    return navigate("/login");
+    try {
+      await createUser(username, email, password);
+      return navigate("/login");
+    } catch (error) {
+      return error.message;
+    }
   }
 
   function logout(){

@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
+import React, { forwardRef, useContext, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Link } from '@mui/material';
+import { Link, Snackbar } from '@mui/material';
 import { AuthContext } from '../context/AuthContext';
+import MuiAlert from '@mui/material/Alert';
 
 function Copyright(props) {
     return (
@@ -20,20 +21,39 @@ function Copyright(props) {
     );
 }
 
+const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
 export default function CreateUserPage() {
 
     const { create } = useContext(AuthContext);
 
-    const handleSubmit = (event) => {
+    const [openSnack, setOpenSnack] = useState(false);
+    const [statusError, setStatusError] = useState("");
+
+    const handleClickSnack = () => {
+        setOpenSnack(true);
+    };
+
+    const handleCloseSnack = (event, reason) => {
+        if (reason === 'clickaway') return;
+        setOpenSnack(false);
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const username = data.get('username');
         const email = data.get('email');
         const password = data.get('password');
 
-        console.log(username, email, password);
+        const response = await create(username, email, password);
 
-        create(username, email, password);
+        if(response){
+            handleClickSnack();
+            setStatusError(response);
+        }
     };
 
   return (
@@ -70,7 +90,8 @@ export default function CreateUserPage() {
                 label="E-mail"
                 name="email"
                 type="email"
-                autoFocus
+                value={"verzel@verzel.com"}
+                sx={{display: 'none'}}
             />
             <TextField
                 margin="normal"
@@ -78,8 +99,8 @@ export default function CreateUserPage() {
                 fullWidth
                 name="password"
                 label="Senha"
-                type="password"
                 id="password"
+                type="password"
                 autoComplete="current-password"
             />
             <Button
@@ -93,6 +114,11 @@ export default function CreateUserPage() {
         </Box>
     </Box>
     <Copyright sx={{ mt: 8, mb: 4 }} />
+    <Snackbar open={openSnack} autoHideDuration={15000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="error" sx={{ width: '100%' }}>
+            {statusError} || ex.: <strong>Verzel@1234</strong>
+        </Alert>
+      </Snackbar>
     </Container>
   )
 }
